@@ -122,7 +122,7 @@
           const cameraId = devices[2].id;
           html5QrCode.start(
             cameraId,
-            { fps: 10, qrbox: 250 },
+            { fps: 10, qrbox: {width: 400, height: 100} },
             qrCodeMessage => {
               document.getElementById('transfer').value = qrCodeMessage;
               html5QrCode.stop();
