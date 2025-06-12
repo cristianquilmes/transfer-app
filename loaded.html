@@ -3,59 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loaded Transfers</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
-  </style>
+  <title>Loaded Data</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h2>Loaded Transfer Packages</h2>
-  <table id="data-table"></table>
+  <h1>Datos cargados</h1>
+
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Dept</th>
+        <th>Transfer</th>
+        <th>Date</th>
+        <th>Packages</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button onclick="downloadCSV()">Guardar CSV</button>
 
   <script>
-    function renderTable(data) {
-      const headers = ['From', 'To', 'Dept', 'Transfer', 'Date', 'Packages'];
-      const table = document.getElementById('data-table');
-      table.innerHTML = '';
-
-      const thead = document.createElement('thead');
-      const headerRow = document.createElement('tr');
-      headers.forEach(header => {
-        const th = document.createElement('th');
-        th.textContent = header;
-        headerRow.appendChild(th);
-      });
-      thead.appendChild(headerRow);
-      table.appendChild(thead);
-
-      const tbody = document.createElement('tbody');
-      data.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(cell => {
-          const td = document.createElement('td');
-          td.textContent = cell;
+    function loadData() {
+      const table = document.querySelector("#dataTable tbody");
+      table.innerHTML = "";
+      const stored = JSON.parse(localStorage.getItem("transferData") || "[]");
+      stored.forEach(row => {
+        const tr = document.createElement("tr");
+        row.forEach(val => {
+          const td = document.createElement("td");
+          td.textContent = val;
           tr.appendChild(td);
         });
-        tbody.appendChild(tr);
+        table.appendChild(tr);
       });
-      table.appendChild(tbody);
     }
 
-    function loadDataFromStorage() {
-      const data = JSON.parse(localStorage.getItem('transfer_data') || '[]');
-      renderTable(data);
+    function downloadCSV() {
+      const stored = JSON.parse(localStorage.getItem("transferData") || "[]");
+      if (stored.length === 0) return alert("No hay datos para guardar");
+      const header = ["From","To","Dept","Transfer","Date","Packages"];
+      const rows = [header, ...stored];
+      const csvContent = rows.map(e => e.join(",")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "transfer_data.csv";
+      link.click();
     }
 
-    window.addEventListener('storage', e => {
-      if (e.key === 'transfer_data_updated') {
-        loadDataFromStorage();
-      }
-    });
-
-    window.addEventListener('DOMContentLoaded', loadDataFromStorage);
+    loadData();
+    setInterval(loadData, 2000);
   </script>
 </body>
 </html>

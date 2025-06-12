@@ -1,138 +1,30 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transfer Scanner App</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transfer App</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-  <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
-    label { display: block; margin-top: 10px; }
-    input, select, button { width: 100%; padding: 8px; margin-top: 5px; }
-    .btn-group { display: flex; justify-content: space-between; margin-top: 20px; }
-    button { width: 48%; }
-    #reader { width: 100%; margin-top: 10px; display: none; }
-  </style>
 </head>
 <body>
-  <h2>Transfer App</h2>
+  <h1>Transfer App</h1>
 
-  <label for="from">Store From:</label>
-  <select id="from">
-    <option value="arnotts">Arnotts</option>
-    <option value="dublin">Dublin</option>
-    <option value="cork">Cork</option>
-    <option value="limerick">Limerick</option>
-    <option value="galway">Galway</option>
-    <option value="dundrum">Dundrum</option>
-    <option value="blanchard">Blanchard</option>
-    <option value="warehouse">Warehouse</option>
-  </select>
+  <label>Store From: <select id="storeFrom"></select></label><br>
+  <label>Store To: <select id="storeTo"></select></label><br>
+  <label>Department: <input type="number" id="department"></label><br>
+  <label>Transfer No: <input type="text" id="transfer" onclick="startScanner()"></label>
+  <button id="stopBtn" onclick="stopScanner()" style="display:none;">Cancelar escaneo</button><br>
+  <label>Date: <input type="date" id="date"></label><br>
+  <label>No. of Packages: <input type="number" id="packages"></label><br>
 
-  <label for="to">Store To:</label>
-  <select id="to">
-    <option value="arnotts">Arnotts</option>
-    <option value="dublin">Dublin</option>
-    <option value="cork">Cork</option>
-    <option value="limerick">Limerick</option>
-    <option value="galway">Galway</option>
-    <option value="dundrum">Dundrum</option>
-    <option value="blanchard">Blanchard</option>
-    <option value="warehouse">Warehouse</option>
-  </select>
+  <div id="reader" style="display:none;"></div>
 
-  <label for="dept">Department:</label>
-  <input type="number" id="dept" />
+  <button onclick="addEntry()">+</button>
+  <button onclick="saveData()">Save</button>
+  <button onclick="window.location.href='loaded.html'">Ver Datos</button>
 
-  <label for="transfer">Transfer No:</label>
-  <input type="text" id="transfer" readonly onclick="startScanner()" />
-  <div id="reader"></div>
-
-  <label for="date">Date:</label>
-  <input type="date" id="date" />
-
-  <label for="packages">No. of Packages:</label>
-  <input type="number" id="packages" />
-
-  <div class="btn-group">
-    <button onclick="saveCSV()">Save</button>
-    <button onclick="addEntry()">+</button>
-  </div>
-
-  <script>
-    function getStoredData() {
-      return JSON.parse(localStorage.getItem('transfer_data') || '[]');
-    }
-
-    function setStoredData(data) {
-      localStorage.setItem('transfer_data', JSON.stringify(data));
-    }
-
-    function addEntry() {
-      const from = document.getElementById('from').value;
-      const to = document.getElementById('to').value;
-      const dept = document.getElementById('dept').value;
-      const transfer = document.getElementById('transfer').value;
-      const date = document.getElementById('date').value;
-      const packages = document.getElementById('packages').value;
-
-      if (!from || !to || !dept || !transfer || !date || !packages) {
-        alert('Complete all fields.');
-        return;
-      }
-
-      const current = getStoredData();
-      current.push([from, to, dept, transfer, date, packages]);
-      setStoredData(current);
-
-      // Trigger update in other tabs
-      localStorage.setItem('transfer_data_updated', Date.now());
-
-      // Clear fields
-      document.getElementById('dept').value = '';
-      document.getElementById('transfer').value = '';
-      document.getElementById('packages').value = '';
-    }
-
-    function saveCSV() {
-      const data = getStoredData();
-      if (data.length === 0) {
-        alert('No data to save.');
-        return;
-      }
-      let csv = 'From,To,Dept,Transfer,Date,Packages\n';
-      data.forEach(row => csv += row.join(',') + '\n');
-
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'transfers.csv';
-      a.click();
-    }
-
-    let html5QrCode;
-
-    function startScanner() {
-      document.getElementById('reader').style.display = 'block';
-      html5QrCode = new Html5Qrcode("reader");
-
-      Html5Qrcode.getCameras().then(devices => {
-        if (devices && devices.length) {
-          const cameraId = devices[2].id;
-          html5QrCode.start(
-            cameraId,
-            { fps: 10, qrbox: {width: 400, height: 100} },
-            qrCodeMessage => {
-              document.getElementById('transfer').value = qrCodeMessage;
-              html5QrCode.stop();
-              document.getElementById('reader').style.display = 'none';
-            },
-            error => {} // ignore scan errors
-          );
-        }
-      }).catch(err => alert('Camera error: ' + err));
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

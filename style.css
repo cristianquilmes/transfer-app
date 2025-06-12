@@ -1,0 +1,39 @@
+body {
+    font-family: sans-serif;
+    padding: 10px;
+  }
+  
+  label, input, select, button {
+    display: block;
+    margin: 5px 0;
+  }
+  
+  button {
+    padding: 5px 10px;
+    margin-right: 5px;
+  }
+  
+  #reader {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 4 / 3;
+    border: 1px solid #ccc;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
