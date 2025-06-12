@@ -19,18 +19,26 @@
 
   <label for="from">Store From:</label>
   <select id="from">
+    <option value="arnotts">Arnotts</option>
     <option value="dublin">Dublin</option>
     <option value="cork">Cork</option>
-    <option value="dundrum">Dundrum</option>
     <option value="limerick">Limerick</option>
+    <option value="galway">Galway</option>
+    <option value="dundrum">Dundrum</option>
+    <option value="blanchard">Blanchard</option>
+    <option value="warehouse">Warehouse</option>
   </select>
 
   <label for="to">Store To:</label>
   <select id="to">
+    <option value="arnotts">Arnotts</option>
     <option value="dublin">Dublin</option>
     <option value="cork">Cork</option>
-    <option value="dundrum">Dundrum</option>
     <option value="limerick">Limerick</option>
+    <option value="galway">Galway</option>
+    <option value="dundrum">Dundrum</option>
+    <option value="blanchard">Blanchard</option>
+    <option value="warehouse">Warehouse</option>
   </select>
 
   <label for="dept">Department:</label>
@@ -111,7 +119,7 @@
 
       Html5Qrcode.getCameras().then(devices => {
         if (devices && devices.length) {
-          const cameraId = devices[0].id;
+          const cameraId = devices[1].id;
           html5QrCode.start(
             cameraId,
             { fps: 10, qrbox: 250 },
