@@ -17,7 +17,7 @@ scanBtn.addEventListener("click", async () => {
   if (devices.length > 1) {
     await html5QrCode.start(
       devices[2].id,
-      { fps: 10, qrbox: { width: 400, height: 30 } },
+      { fps: 10, qrbox: { width: 400, height: 100 } },
       (decodedText) => {
         transferInput.value = decodedText;
         html5QrCode.stop();
