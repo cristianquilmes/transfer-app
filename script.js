@@ -25,7 +25,7 @@ scanBtn.addEventListener("click", async () => {
       }
     );
   } else {
-    alert("No se encontró la cámara trasera.");
+    alert("Rear camera not found.");
   }
 });
 
@@ -45,7 +45,7 @@ addBtn.addEventListener("click", () => {
   };
 
   if (Object.values(data).some(v => v === "")) {
-    alert("Por favor complete todos los campos.");
+    alert("Please complete all fields.");
     return;
   }
 
