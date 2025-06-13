@@ -1,14 +1,14 @@
+<!-- loaded.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loaded Data</title>
+  <title>Loaded Transfers</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Datos cargados</h1>
-
+  <h1>Transferencias Cargadas</h1>
   <table id="dataTable">
     <thead>
       <tr>
@@ -23,39 +23,38 @@
     <tbody></tbody>
   </table>
 
-  <button onclick="downloadCSV()">Guardar CSV</button>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getDatabase, ref, onChildAdded } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
-  <script>
-    function loadData() {
-      const table = document.querySelector("#dataTable tbody");
-      table.innerHTML = "";
-      const stored = JSON.parse(localStorage.getItem("transferData") || "[]");
-      stored.forEach(row => {
-        const tr = document.createElement("tr");
-        row.forEach(val => {
-          const td = document.createElement("td");
-          td.textContent = val;
-          tr.appendChild(td);
-        });
-        table.appendChild(tr);
-      });
-    }
+    const firebaseConfig = {
+      apiKey: "AIzaSyCU6BkPWPNiHFKh4itVkdAPAulgUsdpG0k",
+      authDomain: "transfers-app-9c92c.firebaseapp.com",
+      databaseURL: "https://transfers-app-9c92c-default-rtdb.firebaseio.com",
+      projectId: "transfers-app-9c92c",
+      storageBucket: "transfers-app-9c92c.appspot.com",
+      messagingSenderId: "701224167269",
+      appId: "1:701224167269:web:c7ee58b5a33c4a0300e38c"
+    };
 
-    function downloadCSV() {
-      const stored = JSON.parse(localStorage.getItem("transferData") || "[]");
-      if (stored.length === 0) return alert("No hay datos para guardar");
-      const header = ["From","To","Dept","Transfer","Date","Packages"];
-      const rows = [header, ...stored];
-      const csvContent = rows.map(e => e.join(",")).join("\n");
-      const blob = new Blob([csvContent], { type: "text/csv" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "transfer_data.csv";
-      link.click();
-    }
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const dbRef = ref(db, 'transfers');
 
-    loadData();
-    setInterval(loadData, 2000);
+    const tbody = document.querySelector('#dataTable tbody');
+    onChildAdded(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${data.from}</td>
+        <td>${data.to}</td>
+        <td>${data.department}</td>
+        <td>${data.transferNo}</td>
+        <td>${data.date}</td>
+        <td>${data.packages}</td>
+      `;
+      tbody.appendChild(row);
+    });
   </script>
 </body>
 </html>

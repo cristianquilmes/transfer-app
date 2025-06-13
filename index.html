@@ -1,30 +1,57 @@
 <!-- index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Transfer App</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
   <h1>Transfer App</h1>
+  <form id="transferForm">
+    <label>Store From:</label>
+    <select id="storeFrom">
+      <option value="dublin">Dublin</option>
+      <option value="cork">Cork</option>
+      <option value="limerick">Limerick</option>
+      <option value="dundrum">Dundrum</option>
+    </select>
 
-  <label>Store From: <select id="storeFrom"></select></label><br>
-  <label>Store To: <select id="storeTo"></select></label><br>
-  <label>Department: <input type="number" id="department"></label><br>
-  <label>Transfer No: <input type="text" id="transfer" onclick="startScanner()"></label>
-  <button id="stopBtn" onclick="stopScanner()" style="display:none;">Cancelar escaneo</button><br>
-  <label>Date: <input type="date" id="date"></label><br>
-  <label>No. of Packages: <input type="number" id="packages"></label><br>
+    <label>Store To:</label>
+    <select id="storeTo">
+      <option value="dublin">Dublin</option>
+      <option value="cork">Cork</option>
+      <option value="limerick">Limerick</option>
+      <option value="dundrum">Dundrum</option>
+    </select>
 
-  <div id="reader" style="display:none;"></div>
+    <label>Department:</label>
+    <input type="number" id="department" required />
 
-  <button onclick="addEntry()">+</button>
-  <button onclick="saveData()">Save</button>
-  <button onclick="window.location.href='loaded.html'">Ver Datos</button>
+    <label>Transfer No:</label>
+    <input type="text" id="transferNo" readonly />
+    <button type="button" id="scanBtn">📷 Escanear</button>
+    <button type="button" id="manualEntryBtn">✍️ Ingreso manual</button>
 
+    <label>Date:</label>
+    <input type="date" id="date" required />
+
+    <label>No. of Packages:</label>
+    <input type="number" id="packages" required />
+
+    <div class="buttons">
+      <button type="button" id="addBtn">➕ Add</button>
+      <button type="button" id="saveBtn">💾 Save</button>
+    </div>
+  </form>
+
+  <div id="scanner" class="hidden"></div>
+
+  <!-- Firebase config -->
+  <script type="module" src="firebase-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
+
