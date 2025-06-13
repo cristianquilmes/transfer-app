@@ -18,7 +18,7 @@ scanBtn.addEventListener("click", async () => {
     await html5QrCode.start(
       devices[2].id,
       { fps: 10,
-       aspectRatio: 0.75 // Ancho 4x más que alto (ideal para códigos de barra)
+       aspectRatio: 0.25 // Ancho 4x más que alto (ideal para códigos de barra)
          },
       (decodedText) => {
         transferInput.value = decodedText;
