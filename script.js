@@ -26,7 +26,7 @@ function startScanner() {
   stopBtn.style.display = "inline";
   html5QrCode = new Html5Qrcode("reader");
   Html5Qrcode.getCameras().then(devices => {
-    const cameraId = devices[2] ? devices[2].id : devices[0].id;
+    const cameraId = devices[2] ? devices[2].id : devices[2].id;
     html5QrCode.start(
       cameraId,
       { fps: 10, qrbox: { width: 400, height: 100 }, formatsToSupport: [ Html5QrcodeSupportedFormats.CODE_128 ] },
