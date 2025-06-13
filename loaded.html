@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Loaded Transfers</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Datos cargados</h2>
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Dept</th>
+        <th>Transfer</th>
+        <th>Date</th>
+        <th>Packages</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <button id="downloadBtn">Guardar CSV</button>
+
+  <script type="module">
+    import { db, ref, onValue } from "./firebase-config.js";
+
+    const tbody = document.querySelector("#dataTable tbody");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    const dataRef = ref(db, "transfers");
+    let rows = [];
+
+    onValue(dataRef, (snapshot) => {
+      rows = [];
+      tbody.innerHTML = "";
+      snapshot.forEach((child) => {
+        const d = child.val();
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${d.from}</td><td>${d.to}</td><td>${d.dept}</td><td>${d.transfer}</td><td>${d.date}</td><td>${d.packages}</td>`;
+        tbody.appendChild(tr);
+        rows.push(d);
+      });
+    });
+
+    downloadBtn.addEventListener("click", () => {
+      const csv = ["From,To,Dept,Transfer,Date,Packages"];
+      rows.forEach(d => {
+        csv.push(`${d.from},${d.to},${d.dept},${d.transfer},${d.date},${d.packages}`);
+      });
+
+      const blob = new Blob([csv.join("\\n")], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "transfers.csv";
+      link.click();
+    });
+  </script>
+</body>
+</html>

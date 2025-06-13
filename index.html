@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transfer App</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+  <h2>Transfer App</h2>
+  <form id="transferForm">
+    <label>Store From:</label>
+    <input type="text" id="storeFrom" required />
+
+    <label>Store To:</label>
+    <input type="text" id="storeTo" required />
+
+    <label>Department:</label>
+    <input type="text" id="department" required />
+
+    <label>Transfer No.:</label>
+    <input type="text" id="transferNo" readonly required />
+    <div class="btn-group">
+      <button type="button" id="scanBtn">Scan</button>
+      <button type="button" id="manualBtn">Manual entry</button>
+    </div>
+    <div id="readerBox"></div>
+
+    <label>Date:</label>
+    <input type="date" id="date" required />
+
+    <label>No. of Packages:</label>
+    <input type="number" id="packages" required />
+
+    <div class="btn-group">
+      <button type="button" id="addBtn">Add</button>
+      <button type="button" id="saveBtn" disabled>Save</button>
+    </div>
+  </form>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
