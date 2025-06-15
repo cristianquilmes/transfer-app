@@ -24,12 +24,14 @@
   <button id="downloadBtn">Save CSV</button>
 
   <script type="module">
-    import { db, ref, onValue } from "./firebase-config.js";
+    import { db, ref, onValue,remove } from "./firebase-config.js";
 
     const tbody = document.querySelector("#dataTable tbody");
     const downloadBtn = document.getElementById("downloadBtn");
 
     const dataRef = ref(db, "transfers");
+    remove(dataRef); // borra todo al abrir la página
+    
     let rows = [];
 
     onValue(dataRef, (snapshot) => {
